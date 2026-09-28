@@ -4,11 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
 )
 
 func main() {
-
 	if len(os.Args) < 2 {
 		panic("Please provide a filename")
 	}
@@ -18,12 +16,13 @@ func main() {
 		panic("failed to read the file")
 	}
 
-	scanner := bufio.NewScanner(file)
 	var wordCount int
+	scanner := bufio.NewScanner(file)
+
+	scanner.Split(bufio.ScanWords)
 
 	for scanner.Scan() {
-		words := strings.Fields(scanner.Text())
-		wordCount += len(words)
+		wordCount++
 	}
 
 	if scanner.Err() != nil {
