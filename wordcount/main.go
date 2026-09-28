@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"strings"
@@ -12,12 +13,22 @@ func main() {
 		panic("Please provide a filename")
 	}
 
-	fileContents, err := os.ReadFile(os.Args[1])
+	file, err := os.Open(os.Args[1])
 	if err != nil {
 		panic("failed to read the file")
 	}
 
-	words := strings.Fields(string(fileContents))
+	scanner := bufio.NewScanner(file)
+	var wordCount int
 
-	fmt.Println("Found", len(words), "words")
+	for scanner.Scan() {
+		words := strings.Fields(scanner.Text())
+		wordCount += len(words)
+	}
+
+	if scanner.Err() != nil {
+		panic(scanner.Err())
+	}
+
+	fmt.Println("Found", wordCount, "words")
 }
